@@ -1,4 +1,109 @@
-<h2 class="mt-5">Create New Course</h2>
+<div class="form-row mt-3">
+  <div class="col-6 mb-3">
+    <label for="coursename">Course Name</label>
+    <input type="text" class="form-control" id="coursename" name="coursename" required="true" value='<%= title %>'>
+  </div>
+  <div class="col-5 mb-3">
+    <label for="topic">Topic</label>
+    <input type="text" class="form-control" id="topic" name="topic" required="true" value='<%= topic %>'>
+  </div>
+</div>
+<div class="form-row">
+  <div class="col-2 mb-3">
+    <label for="capacity">Capacity</label>
+    <input type="number" class="form-control" id="capacity" name="capacity" min="0" required="true" value=<%= seats %>>
+  </div>
+  <div class="col-9 mb-3">
+    <label for="location">Location</label>
+    <input type="text" class="form-control" id="location" name="location" required value=<%= location %>>
+  </div>
+</div>
+<div class="form-row">
+  <div class="col-3 mb-3">
+    <label for="deadline">Registration Deadline Date</label>
+    <input type="date" class="form-control" id="deadline" name="deadline" value=<%= deadline.date %> required>
+  </div>
+  <div class="col-3 mb-3">
+    <label for="deadTime">Registration Deadline Time</label>
+    <input type="time" class="form-control" id="deadTime" name="deadTime" value=<%= deadline.time %> required>
+  </div>
+</div>
+<div class="form-row" id="outerSession">
+  <table class="table col-11">
+    <thead>
+      <tr>
+        <td scope="col">Session Name</td>
+        <td scope="col">Date</td>
+        <td scope="col">Start Time</td>
+        <td scope="col">End Time</td>
+        <td scope="col"></td>
+      </tr>
+    </thead>
+    <tbody id="session-rows" class="table-active">
+      <% sessions.forEach((item, index) => { %>
+      <tr id=<%= 'session' + (index + 1) %>>
+        <td>
+          <input type="text" class="form-control" id=<%= 'sessionName' + (index + 1) %>
+            name=<%= 'sessionName' + (index + 1) %> value=<%= item.name %>>
+        </td>
+        <td>
+          <input type="date" class="form-control" id=<%= 'sessionDate' + (index + 1) %>
+            name=<%= 'sessionDate' + (index + 1) %> value=<%= item.date %> required="true">
+        </td>
+        <td>
+          <input type="time" class="form-control" id=<%= 'startTime' + (index + 1) %>
+            name=<%= 'startTime' + (index + 1) %> value=<%= item.start %> required="true">
+        </td>
+        <td>
+          <input type="time" class="form-control" id=<%= 'endTime' + (index + 1) %> name=<%= 'endTime' + (index + 1) %>
+            value=<%= item.end %> required="true">
+        </td>
+        <td class="pl-0 pr-0">
+          <a class="btn pl-0 btn-delete-session" onclick="handle_session_delete(this)"><i
+              class="material-icons md-24">delete</i></a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <!-- <% sessions.forEach((item, index) => { %>
+  <div id=<%= 'session' + (index + 1) %>>
+    <div class="form-row">
+      <div class="col-3 ml-3 mb-3 date-wrapper">
+        <label for="date">Session Date</label>
+        <input type="date" class="form-control" id=<%= 'sessionDate' + (index + 1) %>
+          name=<%= 'sessionDate' + (index + 1) %> value=<%= item.date %> required="true">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-3 ml-3 mb-3 start-wrapper">
+        <label for="startTime1">Start Time</label>
+        <input type="time" class="form-control" id=<%= 'startTime' + (index + 1) %>
+          name=<%= 'startTime' + (index + 1) %> value=<%= item.start %> required="true">
+      </div>
+      <div class="col-3 ml-3 mb-3 end-wrapper">
+        <label for="endTime1">End Time</label>
+        <input type="time" class="form-control" id=<%= 'endTime' + (index + 1) %>
+          name=<%= 'endTime' + (index + 1) %> value=<%= item.end %> required="true">
+      </div>
+    </div>
+  </div>
+  <% }); %> -->
+</div>
+<div class="form-row">
+  <div class="col-2 mb-3">
+    <button class="btn-sm btn-dark" type="button" id="addSession" name="addSession">Add Session</button>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="col-10 mb-4">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" name="description" rows="5"><%= description %></textarea>
+  </div>
+</div>
+
+<!-- <h2 class="mt-5">Create New Course</h2>
 <div class="form-row mt-3">
   <div class="col-6 mb-3">
     <label for="coursename">Course Name</label>
@@ -18,7 +123,7 @@
     <label for="location">Location</label>
     <input type="text" class="form-control" id="location" name="location">
   </div>
-</div>
+</div> -->
 <!-- Old single-date form
 <div class="form-row">
   <div class="col-4 mb-3">
@@ -41,7 +146,7 @@
   </div>
 </div>
 -->
-<div id="outerSession">
+<!-- <div id="outerSession">
   <%- include('./session.ejs') %>
 </div>
 <div class="form-row">
@@ -71,4 +176,4 @@
   </div>
 </div>
 <input type="number" id="sessionTracker" name="sessionTracker" value="1" hidden>
-<input type="submit" id="submitButton" class="btn btn-dark" value="Create New Course">
+<input type="submit" id="submitButton" class="btn btn-dark" value="Create New Course"> -->

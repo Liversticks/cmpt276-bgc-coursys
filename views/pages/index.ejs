@@ -47,7 +47,7 @@
           <% data.forEach((item, index) => { %>
           <tr>
             <th scope="row"><%=index+1 %></th>
-            <td><%= item.title %></td>
+            <td><a href=<%= '/courses/' + item.id %>><%= item.title %></a></td>
             <td><%= item.topic %></td>
             <td><%= item.delivery %></td>
             <td><%= item.time %></td>
@@ -55,7 +55,7 @@
             <td><%= item.maxSeats %></td>
             <td><%= item.status %></td>
             <td>
-              <a href=<%= '/courses/' + item.id %>><i class="material-icons md-24">add_circle</i></a>
+              <a href=<%= '/courses/' + item.id %>><i class="material-icons md-24">visibility</i></a>
               <i class="material-icons md-24">star</i>
             </td>
           </tr>

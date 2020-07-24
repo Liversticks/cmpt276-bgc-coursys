@@ -16,6 +16,10 @@ module.exports = {
   //otherwise, render login page
   login: (request, result) => {
     if (request.user) {
+      console.log(request.user.approved);
+      if (request.user.approved === false) {
+        return result.render('pages/login', {errors: ["Please wait to be approved by an administrator"]});
+      }
       if (request.user.type === 'attendee') {
         return result.redirect('/main');
       } else if (request.user.type === 'organizer') {
@@ -130,7 +134,7 @@ module.exports = {
             return result.json("Could not hash password properly");
           }
           console.log(email[0] + " " + hash);
-          database.query('INSERT INTO users (email, password, type) VALUES ($1, $2, $3);', [email[0], hash, "attendee"], (errInDB, dbRes2) => {
+          database.query('INSERT INTO users (email, password, type, approved) VALUES ($1, $2, $3, $4);', [email[0], hash, "attendee", "false"], (errInDB, dbRes2) => {
             if (errInDB) {
               return result.json("Database error - could not insert");
             }

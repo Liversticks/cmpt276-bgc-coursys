@@ -12,7 +12,7 @@ const courses = require('../userTypes/courses');
 module.exports = (app, passport, database) => {
   //login and logout
   app.get('/login', users.login);
-  app.post('/login', passport.authenticate('local', { failureRedirect: '/loginfail'}), users.login);
+  app.post('/login', passport.authenticate('local', { failureRedirect: '/loginfail' }), users.login);
   app.get('/loginfail', users.loginFail);
   app.get('/logout', auth.requiresLogin, users.logout);
 
@@ -35,6 +35,7 @@ module.exports = (app, passport, database) => {
   app.post('/courses/new', auth.requiresOrganizer, courses.submitNewCourse);
   //add option for change status of members
   app.get('/courses/:id', auth.requiresLogin, courses.viewCourse);
+  app.post('/courses/enroll/:id', auth.requiresLogin, courses.enrollCourse);
   app.get('/courses/edit/:id', auth.requiresOrganizer, courses.renderEditCourse);
   app.post('/courses/edit/:id', auth.requiresOrganizer, courses.editCourse);
 
@@ -48,7 +49,5 @@ module.exports = (app, passport, database) => {
   app.post('/newcourse', courses.submitNewCourse);
 
   app.post('/organizer/sendReminder/:id', auth.requiresOrganizer, organizer.sendReminders);
-
-  app.get('/', (req, res) => {res.redirect('/main')});
 
 }

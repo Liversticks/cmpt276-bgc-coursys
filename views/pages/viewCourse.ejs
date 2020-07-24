@@ -1,78 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <%- include('../partials/header.ejs') %>
-  </head>
-  <body>
 
-    <% if (isOrganizer) { %>
-      <%- include ('../partials/orgNav.ejs') %>
-    <% } else { %>
-      <%- include('../partials/nav.ejs') %>
-    <% } %>
+<head>
+  <%- include('../partials/header.ejs') %>
+</head>
+<% if (isOrganizer) { %>
+<%- include ('../partials/orgNav.ejs') %>
+<% } else { %>
+<%- include('../partials/nav.ejs') %>
+<% } %>
 
-    <div class="container">
-      <div class="row pl-4 pt-4">
-        <!--Course Name-->
-        <h1><%= title %></h1>
-      </div>
-      <div class="row pl-4 pb-2">
-        <h3><%= topic %></h3>
-      </div>
-      <hr class="pb-3"/>
-      <div class="row pl-4 pb-2">
-        <h3>Location: <%= location %></h3>
-      </div>
-      <div class="row pl-4 pb-2">
-        <p><%= description %></p>
-      </div>
-      <hr class="pb-2"/>
-      <div class="row pl-4 pb-1 pt-3">
-        <h3>Sessions</h3>
-      </div>
-      <div class="row">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope='col'>#</th>
-              <th scope='col'>Start Time</th>
-              <th scope='col'>End Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% sessions.forEach((item, index) => { %>
-              <tr>
-                <th scope='row'><%= index+1 %></th>
-                <td><%= item.session_start %></td>
-                <td><%= item.session_end %></td>
-              </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-      <div class="row pl-4 pb-5">
-        <h4>Number of seats: <%= seats %></h4>
-      </div>
-      <div class="row">
-        <form action="/courses/register/<%= id %>" method="POST">
-          <input type="submit" class="btn btn-dark" value="Register">
-        </form>
-      </div>
+<div class="container">
+  <div class="row pl-4 pt-4">
+    <!--Course Name-->
+    <h1><%= title %></h1>
+  </div>
+  <div class="row pl-4 pb-2">
+    <h3 id="topic"><%= topic %></h3>
+  </div>
+  <hr class="pb-3" />
+  <div class="row pl-4 pb-2">
+    <h3 id="location">Location: <%= location %></h3>
+  </div>
+  <div class="row pl-4 pb-2">
+    <p id="description"><%= description %></p>
+  </div>
+  <hr class="pb-2" />
+  <div class="row pl-4 pb-1 pt-3">
+    <h3 id="sessionTitle">Sessions</h3>
+  </div>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope='col'>#</th>
+          <th scope='col'>Start Time</th>
+          <th scope='col'>End Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% sessions.forEach((item, index) => { %>
+        <tr>
+          <th scope='row'><%= index+1 %></th>
+          <td><%= item.session_start %></td>
+          <td><%= item.session_end %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <div class="row pl-4 pb-5">
+    <h4 id="seatNum">Number of seats: <%= seats %></h4>
+  </div>
+
+  <% if (!isOrganizer) { %>
+  <div class="row">
+    <form action="/courses/enroll/<%= id %>" method="POST">
+      <input type="submit" class="btn btn-dark" value="Enroll">
+    </form>
+  </div>
+  <% } %>
+
+  <% if (isOrganizer) { %>
+  <div class="row pl-4 pt-4">
+    <h3>Organizer Only</h3>
+  </div>
+  <div class="row">
+    <form action="/organizer/sendReminder/<%= id %>" method="POST">
+      <input type="checkbox" id="emailConf" name="emailConf" required="true">
+      <label for="emailConf"> I am aware this will send an email to all users enrolled</label><br>
+      <input type="submit" class="btn btn-dark" value="Send Reminder to Participants" id="emailSendSubmit">
+    </form>
+  </div>
+  <% } %>
+</div>
 
 
-      <% if (isOrganizer) { %>
-        <div class="row pl-4 pt-4">
-          <h3>Organizer Only</h3>
-        </div>
-        <div class="row">
-          <form action="/organizer/sendReminder/<%= id %>" method="POST">
-            <input type="checkbox" id="emailConf" name="emailConf" required="true">
-            <label for="emailConf"> I am aware this will send an email to all users enrolled</label><br>
-            <input type="submit" class="btn btn-dark" value="Send Reminder to Participants" id="emailSendSubmit">
-          </form>
-        </div>
-      <% } %>
-    </div>
 
-  </body>
+</div>
+
+
+</body>
+
 </html>

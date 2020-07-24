@@ -2,208 +2,164 @@
 <html>
 
 <head>
-    <%- include ('../partials/header.ejs') %>
+  <%- include ('../partials/header.ejs') %>
 
 </head>
 
 <body>
-
-
   <%- include ('../partials/orgNav.ejs') %>
 
-    <div class="container justify-content-center">
-        <form id="courseForm" class="justify-content-around" method="POST" action="<%= '/courses/edit/' + id %>"
-            onsubmit="return validateForm()">
-            <h2 class="mt-5">Edit Course</h2>
-            <div class="form-row mt-3">
-              <div class="col-6 mb-3">
-                <label for="coursename">Course Name</label>
-                <input type="text" class="form-control" id="coursename" name="coursename" required="true" value='<%= title %>'>
-              </div>
-              <div class="col-5 mb-3">
-                <label for="topic">Topic</label>
-                <input type="text" class="form-control" id="topic" name="topic" required="true" value='<%= topic %>'>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-2 mb-3">
-                <label for="capacity">Capacity</label>
-                <input type="number" class="form-control" id="capacity" name="capacity" min="0" required="true" value=<%= seats %>>
-              </div>
-              <div class="col-9 mb-3">
-                <label for="location">Location</label>
-                <input type="text" class="form-control" id="location" name="location" required value=<%= location %>>
-              </div>
-            </div>
-            <div id="outerSession">
-              <% sessions.forEach((item, index) => { %>
-                <div id=<%= 'session' + (index + 1) %>>
-                  <div class="form-row">
-                    <div class="col-3 ml-3 mb-3 date-wrapper">
-                      <label for="date">Session Date</label>
-                      <input type="date" class="form-control" id=<%= 'sessionDate' + (index + 1) %> name=<%= 'sessionDate' + (index + 1) %> value=<%= item.date %> required="true">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col-3 ml-3 mb-3 start-wrapper">
-                      <label for="startTime1">Start Time</label>
-                      <input type="time" class="form-control" id=<%= 'startTime' + (index + 1) %> name=<%= 'startTime' + (index + 1) %> value=<%= item.start %> required="true">
-                    </div>
-                    <div class="col-3 ml-3 mb-3 end-wrapper">
-                      <label for="endTime1">End Time</label>
-                      <input type="time" class="form-control" id=<%= 'endTime' + (index + 1) %> name=<%= 'endTime' + (index + 1) %> value=<%= item.end %> required="true">
-                    </div>
-                  </div>
-                </div>
-              <% }); %>
-            </div>
-            <div class="form-row">
-              <div class="col-2 mb-3">
-                <button class="btn btn-dark" type="button" id="addSession" name="addSession">Add Session</button>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-2 mb-3">
-                <button class="btn btn-dark" type="button" id="removeSession" name="removeSession" hidden>Remove Session</button>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-3 mb-3">
-                <label for="deadline">Registration Deadline Date</label>
-                <input type="date" class="form-control" id="deadline" name="deadline" value=<%= deadline.date %> required>
-              </div>
-              <div class="col-3 mb-3">
-                  <label for="deadTime">Registration Deadline Time</label>
-                  <input type="time" class="form-control" id="deadTime" name="deadTime" value=<%= deadline.time %> required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-10 mb-4">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="5"><%= description %></textarea>
-              </div>
-            </div>
-            <input type="number" id="sessionTracker" name="sessionTracker" value=<%= sessionNum %> hidden>
-            <input type="submit" class="btn btn-dark" value="Edit Course">
-        </form>
-    </div>
+  <div class="container">
+    <div class="row pt-5 justify-content-center pb-5">
+      <form id="courseForm" class="justify-content-around col-12" method="POST" action="<%= '/courses/edit/' + id %>"
+        onsubmit="return validateForm()">
+        <h2 class="">Edit Course</h2>
+        <%- include ('../partials/courseForm.ejs') %>
 
+        <input type="number" id="sessionTracker" name="sessionTracker" value=<%= sessionNum %>>
+        <input type="submit" class="btn btn-dark" value="Save">
+      </form>
+    </div>
+  </div>
 
 
 </body>
 <script>
-    //identical to the script from newCourse.ejs except numSessions does not necessarily start at 1
-    //handy materials
-    let numSessions = document.getElementById('sessionTracker').value;
-    let sessionDiv = document.getElementById('session1').cloneNode(true);
-    let newButton = document.getElementById('addSession');
-    let removeButton = document.getElementById('removeSession');
-    let outerSession = document.getElementById('outerSession');
-    let sessionTracker = document.getElementById('sessionTracker');
-    let deadline = document.getElementById('deadline');
+  //identical to the script from newCourse.ejs except numSessions does not necessarily start at 1
+  //handy materials
+  let numSessions = document.getElementById('sessionTracker').value;
+  let sessionDiv = document.getElementById('session1').cloneNode(true);
+  let newButton = document.getElementById('addSession');
+  let removeButton = document.getElementById('removeSession');
+  let outerSession = document.getElementById('outerSession');
+  let sessionTracker = document.getElementById('sessionTracker');
+  let deadline = document.getElementById('deadline');
 
-    if (numSessions > 1) {
-      removeButton.removeAttribute("hidden");
+
+  function validateForm() {
+    //check that sessions do not overlap
+    //check that sessions
+
+    //check that numSessions matches hidden session tracker in form
+    if (document.getElementById('sessionTracker').value != numSessions) {
+      alert("Session tracker de-synced: refresh and try again");
+      return false;
     }
 
-    function validateForm() {
-        //check that sessions do not overlap
-        //check that sessions
-
-        //check that numSessions matches hidden session tracker in form
-        if (document.getElementById('sessionTracker').value != numSessions) {
-          alert("Session tracker de-synced: refresh and try again");
-          return false;
-        }
-
-        //check that capacity is positive
-        if (document.getElementById('capacity').value < 0) {
-          alert("Cannot have negative capacity");
-          return false;
-        }
-
-        let dates = document.getElementsByClassName('date-wrapper');
-        let starts = document.getElementsByClassName('start-wrapper');
-        let ends = document.getElementsByClassName('end-wrapper');
-        if (dates.length !== starts.length || dates.length !== ends.length || ends.length !== starts.length) {
-          return false;
-        }
-
-        //time-related checks
-        let previousStart = new Date(0);
-        let previousEnd = new Date();
-        let creationTime = new Date();
-
-        //check that registration deadline is before the course begins
-        //by default, 11:59 pm on the date specified (in the timezone of the server)
-        let deadlineDate = new Date(deadline.value + ' ' + deadTime.value);
-        let startTime = new Date(dates[0].lastElementChild.value + ' ' + starts[0].lastElementChild.value);
-        if (startTime < deadlineDate) {
-          alert("Cannot schedule registration deadline after the first course session.");
-          return false;
-        }
-
-        for (let i = 0; i < dates.length; i++) {
-          let startDateTime = new Date(dates[i].lastElementChild.value + ' ' + starts[i].lastElementChild.value);
-          let endDateTime = new Date(dates[i].lastElementChild.value + ' ' + ends[i].lastElementChild.value);
-          if (previousStart > startDateTime) {
-            alert("Sessions should be scheduled in chronological order");
-            return false;
-          }
-          if (creationTime > startDateTime) {
-            alert("Cannot schedule courses in the past, unless you have magical time travel");
-            return false;
-          }
-          if (previousEnd > startDateTime) {
-            alert("Sessions should not overlap (previous session must end before next session starts)");
-            return false;
-          }
-          if (startDateTime > endDateTime) {
-              alert("End time of course must be after the start");
-              return false;
-          }
-          previousStart = startDateTime;
-          previousEnd = endDateTime;
-        }
-        return true;
-    }
-    //create new session
-    function newSession() {
-      //currently blank session is cloned
-      //TODO: keep times, auto date interval?
-      let newNode = sessionDiv.cloneNode(true);
-      numSessions++;
-      newNode.setAttribute('id', ('session' + numSessions));
-      //change date attribute
-      newNode.firstElementChild.firstElementChild.lastElementChild.setAttribute('id', ('sessionDate' + numSessions));
-      newNode.firstElementChild.firstElementChild.lastElementChild.setAttribute('name', ('sessionDate' + numSessions));
-
-      //change start time
-      newNode.lastElementChild.firstElementChild.lastElementChild.setAttribute('id', ('startTime' + numSessions));
-      newNode.lastElementChild.firstElementChild.lastElementChild.setAttribute('name', ('startTime' + numSessions));
-
-      //change end time
-      newNode.lastElementChild.lastElementChild.lastElementChild.setAttribute('id', ('endTime' + numSessions));
-      newNode.lastElementChild.lastElementChild.lastElementChild.setAttribute('name', ('endTime' + numSessions));
-      outerSession.appendChild(newNode);
-      removeButton.removeAttribute('hidden');
-      sessionTracker.setAttribute('value', numSessions);
-
+    //check that capacity is positive
+    if (document.getElementById('capacity').value < 0) {
+      alert("Cannot have negative capacity");
+      return false;
     }
 
-    //remove session
-    function removeSession() {
-      let targetDiv = document.getElementById('session' + numSessions);
-      targetDiv.remove();
-      numSessions--;
-      if (numSessions < 2) {
-        removeButton.setAttribute('hidden', '');
+    let dates = document.getElementsByClassName('date-wrapper');
+    let starts = document.getElementsByClassName('start-wrapper');
+    let ends = document.getElementsByClassName('end-wrapper');
+    if (dates.length !== starts.length || dates.length !== ends.length || ends.length !== starts.length) {
+      return false;
+    }
+
+    //time-related checks
+    let previousStart = new Date(0);
+    let previousEnd = new Date();
+    let creationTime = new Date();
+
+    //check that registration deadline is before the course begins
+    //by default, 11:59 pm on the date specified (in the timezone of the server)
+    let deadlineDate = new Date(deadline.value + ' ' + deadTime.value);
+    let startTime = new Date(dates[0].lastElementChild.value + ' ' + starts[0].lastElementChild.value);
+    if (startTime < deadlineDate) {
+      alert("Cannot schedule registration deadline after the first course session.");
+      return false;
+    }
+
+    for (let i = 0; i < dates.length; i++) {
+      let startDateTime = new Date(dates[i].lastElementChild.value + ' ' + starts[i].lastElementChild.value);
+      let endDateTime = new Date(dates[i].lastElementChild.value + ' ' + ends[i].lastElementChild.value);
+      if (previousStart > startDateTime) {
+        alert("Sessions should be scheduled in chronological order");
+        return false;
       }
-      sessionTracker.setAttribute('value', numSessions);
+      if (creationTime > startDateTime) {
+        alert("Cannot schedule courses in the past, unless you have magical time travel");
+        return false;
+      }
+      if (previousEnd > startDateTime) {
+        alert("Sessions should not overlap (previous session must end before next session starts)");
+        return false;
+      }
+      if (startDateTime > endDateTime) {
+        alert("End time of course must be after the start");
+        return false;
+      }
+      previousStart = startDateTime;
+      previousEnd = endDateTime;
     }
+    return true;
+  }
+  //create new session
+  // function newSession() {
+  //   //currently blank session is cloned
+  //   //TODO: keep times, auto date interval?
+  //   let newNode = sessionDiv.cloneNode(true);
+  //   numSessions++;
+  //   newNode.setAttribute('id', ('session' + numSessions));
+  //   //change date attribute
+  //   newNode.firstElementChild.firstElementChild.lastElementChild.setAttribute('id', ('sessionDate' + numSessions));
+  //   newNode.firstElementChild.firstElementChild.lastElementChild.setAttribute('name', ('sessionDate' + numSessions));
 
-    //event listeners
+  //   //change start time
+  //   newNode.lastElementChild.firstElementChild.lastElementChild.setAttribute('id', ('startTime' + numSessions));
+  //   newNode.lastElementChild.firstElementChild.lastElementChild.setAttribute('name', ('startTime' + numSessions));
+
+  //   //change end time
+  //   newNode.lastElementChild.lastElementChild.lastElementChild.setAttribute('id', ('endTime' + numSessions));
+  //   newNode.lastElementChild.lastElementChild.lastElementChild.setAttribute('name', ('endTime' + numSessions));
+  //   outerSession.appendChild(newNode);
+  //   removeButton.removeAttribute('hidden');
+  //   sessionTracker.setAttribute('value', numSessions);
+
+  // }
+
+  function updateSessionTracker() {
+    $("#sessionTracker").attr('value', numSessions);
+  }
+  function updateSessionIdentifiers() {
+    let attrName = ['sessionName', 'sessionDate', 'startTime', 'endTime'];
+    $('#session-rows').children().each((ridx, row) => {
+      $(row).attr('id', 'session' + (ridx + 1));
+      $(row).children().each((cidx, col) => {
+        $(col).children().first().attr('name', attrName[cidx] + (ridx + 1));
+        $(col).children().first().attr('id', attrName[cidx] + (ridx + 1));
+      });
+    });
+  }
+  function newSession() {
+    let $tr = $("#session1").clone().appendTo($("#session-rows"));
+    $tr.find("input").val("");
+    numSessions++;
+    updateSessionTracker();
+    updateSessionIdentifiers();
+    //default name
+    if (numSessions > 1)
+      $(".btn-delete-session").show();
+
+  }
+  function handle_session_delete(but) {
+    $(but).parents('tr').remove();
+    numSessions--;
+    updateSessionTracker();
+    updateSessionIdentifiers();
+    if (numSessions <= 1)
+      $(".btn-delete-session").hide();
+  }
+
+
+  $(document).ready(() => {//event listeners
     newButton.addEventListener('click', newSession);
+    if (numSessions <= 1)
+      $(".btn-delete-session").hide();
+    $("#sessionTracker").hide();
+  });
 
-    removeButton.addEventListener('click', removeSession);
 </script>

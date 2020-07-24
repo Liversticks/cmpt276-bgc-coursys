@@ -11,10 +11,10 @@ module.exports = (passport, database) => {
     usernameField: 'uname',
     passwordField: 'pwd'
   }, (email, password, callback) => {
-    database.query('SELECT id, email, password, type FROM users WHERE email=$1;', [email], (err, dbres) => {
+    database.query('SELECT id, email, password, type, approved FROM users WHERE email=$1;', [email], (err, dbres) => {
       if (err) {
         console.log("Database error: login-related");
-        return callback(error);
+        return callback(err);
       }
       if (dbres.rows.length > 0) {
         const resultRow = dbres.rows[0];
@@ -22,7 +22,7 @@ module.exports = (passport, database) => {
         //check to see whether user-entered password matches stored (hashed) password
         bcrypt.compare(password, resultRow.password, function(err, hashres) {
           if (hashres) {
-            callback(null, { id: resultRow.id, email: resultRow.email, type: resultRow.type});
+            callback(null, { id: resultRow.id, email: resultRow.email, type: resultRow.type, approved: resultRow.approved});
           } else {
             callback(null, false, { message: "Authentication error: incorrect email or password." });
           }

@@ -390,13 +390,58 @@ describe('login-interactions', function() {
     });
     //course access
     describe('course-access', function() {
-      it('Users must be logged in to access a course path');
-      it('Accessing a non-existent course will return a status code')
-      it('For a valid course, the title must show up');
-      it('For a valid course, the topic must be present');
-      it("For a valid course, the location must be present");
-      it("For a valid course, the maximum number of seats must be present");
-      it("For a valid course, the registration deadline must be present");
+      //it('Users must be logged in to access a course path');
+      //it('Accessing a non-existent course will return a status code')
+      it('For a valid course, the title must show up', async function() {
+        await driver.get(loginURL);
+        await driver.sleep(1000);
+        await driver.findElement(By.name('uname')).sendKeys('test-organizer@bgcengineering.ca');
+        await driver.findElement(By.name('pwd')).sendKeys('teamBPtestpassword1');
+        await driver.findElement(By.id('loginSubmit')).click();
+
+        await driver.get('https://cmpt276-bgc-coursys.herokuapp.com/courses/4');
+        const title = driver.findElement(By.class('h1')).getText();
+        await driver.get(logoutURL);
+        expect(title).to.be.a('string').that.is.not.empty;
+
+      });
+      it('For a valid course, the topic must be present', async function() {
+        await driver.get(loginURL);
+        await driver.sleep(1000);
+        await driver.findElement(By.name('uname')).sendKeys('test-organizer@bgcengineering.ca');
+        await driver.findElement(By.name('pwd')).sendKeys('teamBPtestpassword1');
+        await driver.findElement(By.id('loginSubmit')).click();
+
+        await driver.get('https://cmpt276-bgc-coursys.herokuapp.com/courses/4');
+        const topic = await driver.findElement(By.id('topic')).getText();
+        await driver.get(logoutURL);
+        expect(topic).to.be.a('string').that.is.not.empty;
+
+      });
+      it("For a valid course, the location must be present", async function() {
+        await driver.get(loginURL);
+        await driver.sleep(1000);
+        await driver.findElement(By.name('uname')).sendKeys('test-organizer@bgcengineering.ca');
+        await driver.findElement(By.name('pwd')).sendKeys('teamBPtestpassword1');
+        await driver.findElement(By.id('loginSubmit')).click();
+
+        await driver.get('https://cmpt276-bgc-coursys.herokuapp.com/courses/4');
+        const location = await driver.findElement(By.id('location')).getText();
+        await driver.get(logoutURL);
+        expect(location).to.be.a('string').that.is.not.empty;
+      });
+      it("For a valid course, the maximum number of seats must be present", async function() {
+        await driver.get(loginURL);
+        await driver.sleep(1000);
+        await driver.findElement(By.name('uname')).sendKeys('test-organizer@bgcengineering.ca');
+        await driver.findElement(By.name('pwd')).sendKeys('teamBPtestpassword1');
+        await driver.findElement(By.id('loginSubmit')).click();
+
+        await driver.get('https://cmpt276-bgc-coursys.herokuapp.com/courses/4');
+        const seats = await driver.findElement(By.id('seatNum')).getText();
+        await driver.get(logoutURL);
+        expect(seats).to.be.a('string').that.is.not.empty;
+      });
       it("For a valid course, there should be at least one session with indicated date, start, and end times")
     });
 
@@ -473,6 +518,54 @@ describe('login-interactions', function() {
     //   expect(message).to.equal('ERROR: EMAIL NOT SENT! API failure. You will be redirected to the course view.');
     // });
 
+    describe('disable-user', () => {
+      await driver.get(loginURL);
+      await driver.sleep(20000);
+      await driver.findElement(By.name('uname')).sendKeys('test-organizer@bgcengineering.ca');
+      await driver.findElement(By.name('pwd')).sendKeys('teamBPtestpassword1');
+      await driver.findElement(By.id('loginSubmit')).click();
+      await driver.get('https://cmpt276-bgc-coursys.herokuapp.com/organizer/allusers');
+
+      await driver.findElement(By.id('approvedFalse3')).click();
+      await driver.findElement(By.name('updateUserData')).click();
+
+      const message = await driver.findElement(By.id('redirectMessage')).getText();
+      await driver.get(logoutURL);
+      expect(message).to.equal('User data has been successfully updated! You will be redirected to the main courses page.');
+      
+      await driver.get(loginURL);
+      await driver.findElement(By.name('uname')).sendKeys('mla283@sfu.ca');
+      await driver.findElement(By.name('pwd')).sendKeys('Password123!');
+      await driver.findElement(By.id('loginSubmit')).click();
+
+      const curURL = await driver.getCurrentUrl();
+      expect(curURL).to.equal('https://cmpt276-bgc-coursys.herokuapp.com/login');
+    });
+
+    describe('approve-user', () => {
+      await driver.get(loginURL);
+      await driver.sleep(20000);
+      await driver.findElement(By.name('uname')).sendKeys('test-organizer@bgcengineering.ca');
+      await driver.findElement(By.name('pwd')).sendKeys('teamBPtestpassword1');
+      await driver.findElement(By.id('loginSubmit')).click();
+      await driver.get('https://cmpt276-bgc-coursys.herokuapp.com/organizer/allusers');
+
+      await driver.findElement(By.id('approvedTrue3')).click();
+      await driver.findElement(By.name('updateUserData')).click();
+
+      const message = await driver.findElement(By.id('redirectMessage')).getText();
+      await driver.get(logoutURL);
+      expect(message).to.equal('User data has been successfully updated! You will be redirected to the main courses page.');
+      
+      await driver.get(loginURL);
+      await driver.findElement(By.name('uname')).sendKeys('mla283@sfu.ca');
+      await driver.findElement(By.name('pwd')).sendKeys('Password123!');
+      await driver.findElement(By.id('loginSubmit')).click();
+
+      const curURL = await driver.getCurrentUrl();
+      expect(curURL).to.equal('https://cmpt276-bgc-coursys.herokuapp.com/main');
+      // should check mla283@sfu.ca's inbox to see email received
+    });
 });
 
 

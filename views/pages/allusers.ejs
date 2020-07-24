@@ -17,7 +17,8 @@
     <div class="container">
       <h2>Modify User Status</h2>
       <form id="modifyUser" action="/organizer/allusers" method="post">
-        <input type="number" name="tableSize" value="<%= userData.length %>" hidden>
+        <input type="number" name="minID" value="<%= minID %>" hidden>
+        <input type="number" name="maxID" value="<%= maxID %>" hidden>
 
         <table class="table table-striped">
           <thead>
@@ -25,6 +26,9 @@
               <th scope='col'>ID</th>
               <th scope='col'>Email</th>
               <th scope='col'>Status</th>
+              <th scope='col'>Approval</th>
+              <th scope='col'>Delete User</th>
+
             </tr>
           </thead>
           <tbody>
@@ -61,12 +65,76 @@
                   </div>
                 <% } %>
               </td>
+              <td>
+                <!-- Based on the user status, have a different radio button checked by default-->
+                <% if (user.approved === true) {%>
+                <div>
+                  <input type="radio" name=<%= "approved" + user.id %> id=<%= "approvedTrue" + user.id %> value="true" checked>
+                  <label for="true">Activate</label>
+                </div>
+                <div>
+                  <input type="radio" name=<%= "approved" + user.id %> id=<%= "approvedFalse" + user.id %> value="false">
+                  <label for="false">Disable</label>
+                </div>
+                <% } else { %>
+                  <div>
+                    <input type="radio" name=<%= "approved" + user.id %> id=<%= "approvedTrue" + user.id %> value="true">
+                    <label for="true">Activated</label>
+                  </div>
+                  <div>
+                    <input type="radio" name=<%= "approved" + user.id %> id=<%= "approvedFalse" + user.id %> value="false" checked>
+                    <label for="false">Not Activated</label>
+                  </div>
+                <% } %>
+            </td>
+            <td>
+                <div class="text-center">
+                  <input type="checkbox" name=<%= "delete" + user.id %> value="deletePls">
+                </div>
+            </td>
             </tr>
+            <% } else { %>
+              <!--Still need to submit current user as hidden data-->
+              <th scope='row'>
+                <input type="number" class="borderlessInput" size="4" name=<%= "id" + user.id %> value=<%= user.id %> readonly>
+              </th>
+              <td>
+                <!-- leave email read-only for now -->
+                <input type="email" class="borderlessInput" size="50" name=<%= "email" + user.id %> value=<%= user.email %> readonly>
+              </td>
+              <td>
+                <div>
+                  <input type="radio" name=<%= "status" + user.id %> value="organizer" checked readonly>
+                  <label for="organizer">Organizer</label>
+                </div>
+                <div>
+                  <input type="radio" name=<%= "status" + user.id %>  value="attendee" disabled>
+                  <label for="attendee">Attendee</label>
+                </div>
+              </td>
+
+              <td>
+                <div>
+                  <input type="radio" name=<%= "approved" + user.id %> value="true" checked readonly>
+                  <label for="true">Activated</label>
+                </div>
+                <div>
+                  <input type="radio" name=<%= "approved" + user.id %>  value="false" readonly disabled>
+                  <label for="false">Not Activated</label>
+                </div>
+              </td>
+
+              <td>
+                  <div class="text-center">
+                    <input type="checkbox" name=<%= "delete" + user.id %> value="deletePls" disabled>
+                  </div>
+              </td>
+
             <% } %>
           <% }); %>
           </tbody>
         </table>
-
+        <p>Note: Once user data is deleted, it cannot be recovered.</p>
         <% if (userData.length > 0) { %>
           <input type="submit" class="btn btn-dark" name="updateUserData" value="Update User Data">
         <% } else { %>
