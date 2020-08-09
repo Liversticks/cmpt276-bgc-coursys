@@ -47,15 +47,15 @@
             name=<%= 'sessionName' + (index + 1) %> value=<%= item.name %>>
         </td>
         <td>
-          <input type="date" class="form-control" id=<%= 'sessionDate' + (index + 1) %>
+          <input type="date" class="form-control date-wrapper" id=<%= 'sessionDate' + (index + 1) %>
             name=<%= 'sessionDate' + (index + 1) %> value=<%= item.date %> required="true">
         </td>
         <td>
-          <input type="time" class="form-control" id=<%= 'startTime' + (index + 1) %>
+          <input type="time" class="form-control start-wrapper" id=<%= 'startTime' + (index + 1) %>
             name=<%= 'startTime' + (index + 1) %> value=<%= item.start %> required="true">
         </td>
         <td>
-          <input type="time" class="form-control" id=<%= 'endTime' + (index + 1) %> name=<%= 'endTime' + (index + 1) %>
+          <input type="time" class="form-control end-wrapper" id=<%= 'endTime' + (index + 1) %> name=<%= 'endTime' + (index + 1) %>
             value=<%= item.end %> required="true">
         </td>
         <td class="pl-0 pr-0">

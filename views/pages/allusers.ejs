@@ -70,11 +70,11 @@
                 <% if (user.approved === true) {%>
                 <div>
                   <input type="radio" name=<%= "approved" + user.id %> id=<%= "approvedTrue" + user.id %> value="true" checked>
-                  <label for="true">Activate</label>
+                  <label for="true">Activated</label>
                 </div>
                 <div>
                   <input type="radio" name=<%= "approved" + user.id %> id=<%= "approvedFalse" + user.id %> value="false">
-                  <label for="false">Disable</label>
+                  <label for="false">Not Avtivated</label>
                 </div>
                 <% } else { %>
                   <div>
