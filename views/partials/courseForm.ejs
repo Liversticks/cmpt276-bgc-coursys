@@ -21,11 +21,11 @@
 <div class="form-row">
   <div class="col-3 mb-3">
     <label for="deadline">Registration Deadline Date</label>
-    <input type="date" class="form-control" id="deadline" name="deadline" value=<%= deadline.date %> required>
+    <input type="date" class="form-control" id="deadline" name="deadline" required value=<%= deadline.date %>>
   </div>
   <div class="col-3 mb-3">
     <label for="deadTime">Registration Deadline Time</label>
-    <input type="time" class="form-control" id="deadTime" name="deadTime" value=<%= deadline.time %> required>
+    <input type="time" class="form-control" id="deadTime" name="deadTime" required value=<%= deadline.time %>>
   </div>
 </div>
 <div class="form-row" id="outerSession">
@@ -48,15 +48,15 @@
         </td>
         <td>
           <input type="date" class="form-control date-wrapper" id=<%= 'sessionDate' + (index + 1) %>
-            name=<%= 'sessionDate' + (index + 1) %> value=<%= item.date %> required="true">
+            name=<%= 'sessionDate' + (index + 1) %> required value="<%= item.date %>">
         </td>
         <td>
           <input type="time" class="form-control start-wrapper" id=<%= 'startTime' + (index + 1) %>
-            name=<%= 'startTime' + (index + 1) %> value=<%= item.start %> required="true">
+            name=<%= 'startTime' + (index + 1) %> required value="<%= item.start %>">
         </td>
         <td>
           <input type="time" class="form-control end-wrapper" id=<%= 'endTime' + (index + 1) %> name=<%= 'endTime' + (index + 1) %>
-            value=<%= item.end %> required="true">
+            required value="<%= item.end %>">
         </td>
         <td class="pl-0 pr-0">
           <a class="btn pl-0 btn-delete-session" onclick="handle_session_delete(this)"><i
