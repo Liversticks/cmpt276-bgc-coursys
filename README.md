@@ -1,6 +1,6 @@
 # BGC Coursys
 
-Created by Ngoc duy (Adrian) Nguyen, Minh (Brian) Le, and Oliver Xie
+Created by Ngoc duy (Adrian) Nguyen, Minh (Brian) Le, and Oliver Xie\
 GitLab link (requires SFU gitlab access): https://csil-git1.cs.surrey.sfu.ca/mla283/cmpt-276-bgcoursys
 
 ## About
@@ -139,10 +139,10 @@ Setup:
 
 
 Automated emails are sent when:
-* New users are approved by an organizer (template: in updateUsers in `./userTypes/organizer/index.js`)
-* Users are moved from the waitlist to enrolled (when course grows in capacity) (template: in withdrawCourse in `./userTypes/courses/index.js`)
+* New users are approved by an organizer (template: in `updateUsers` in `./userTypes/organizer/index.js`)
+* Users are moved from the waitlist to enrolled (when course grows in capacity) (template: in `withdrawCourse` in `./userTypes/courses/index.js`)
 
-Manual emails can be sent by organizers on the view-course page (`/courses/ID`). (Ideally, these would be sent automatically a certain amount of time before the first session, but Heroku did not support this). The template is in sendReminders in `./userTypes/organizer/index.js`.
+Manual emails can be sent by organizers on the view-course page (`/courses/ID`). (Ideally, these would be sent automatically a certain amount of time before the first session, but Heroku did not support this). The template is in `sendReminders` in `./userTypes/organizer/index.js`.
 
 ## User Course Status
 
