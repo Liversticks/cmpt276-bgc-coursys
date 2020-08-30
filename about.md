@@ -151,7 +151,8 @@ We wished we had more time/energy left to implement a profile page for users to 
 
 IMPORTANT: AS OF NOW, THERE IS NO WAY FOR A USER TO VIEW COURSE DETAILS FOR A COURSE THEY ARE CURRENTLY ENROLLED/WAITLISTED IN BUT WHERE THE REGISTRATION DEADLINE HAS PASSED. (This is due to the queryCourse query in the landing function in `./userTypes/users/index.js`, which filters using the course deadline). Organizers will be able to "view" the details regardless of time by going to the course edit page without making any changes.
 
-Ideally, we would build a user page to show the user's past enrolled courses and current enrolled/waitlisted courses. One would access this page from the sidebar.
+Ideally, we would build a user page to show the user's past enrolled courses and current enrolled/waitlisted courses. One could use the following query:
+`let query = 'SELECT c.* FROM COURSE c, ENROLLMENT e WHERE c.id = e.course_id AND e.user_id = $1;'` (passing the userID, located in req.user.id, as the query parameter), then map the result rows into a table. One would access this page from the sidebar.
 
 ## Technical details
 
