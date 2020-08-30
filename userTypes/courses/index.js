@@ -86,7 +86,7 @@ module.exports = {
           description: "",
           sessionNum: 1,
           sessions: [{ name: "", start: "", end: "", date: "" }],
-          deadline: "",
+          deadline: { date: "", time: ""},
           seats: "",
           curTags: [],
           allTags: allTags,

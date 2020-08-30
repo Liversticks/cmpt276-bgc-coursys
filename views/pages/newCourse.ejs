@@ -96,13 +96,6 @@ $('#tags').selectize({
 
   function validateForm() {
     //check that sessions do not overlap
-    //check that sessions
-
-    //check that numSessions matches hidden session tracker in form
-    if (document.getElementById('sessionTracker').value != numSessions) {
-      alert("Session tracker de-synced: refresh and try again");
-      return false;
-    }
 
     //check that capacity is positive
     if (document.getElementById('capacity').value < 0) {
@@ -127,7 +120,7 @@ $('#tags').selectize({
     //check that registration deadline is before the course begins
     //by default, 11:59 pm on the date specified (in the timezone of the server)
     let deadlineDate = new Date(deadline.value + ' ' + deadTime.value);
-    let startTime = new Date(dates[0].lastElementChild.value + ' ' + starts[0].lastElementChild.value);
+    let startTime = new Date(dates[0].value + ' ' + starts[0].value);
     if (startTime < deadlineDate) {
       alert("Cannot schedule registration deadline after the first course session.");
       return false;
@@ -138,8 +131,8 @@ $('#tags').selectize({
     }
 
     for (let i = 0; i < dates.length; i++) {
-      let startDateTime = new Date(dates[i].lastElementChild.value + ' ' + starts[i].lastElementChild.value);
-      let endDateTime = new Date(dates[i].lastElementChild.value + ' ' + ends[i].lastElementChild.value);
+      let startDateTime = new Date(dates[i].value + ' ' + starts[i].value);
+      let endDateTime = new Date(dates[i].value + ' ' + ends[i].value);
       if (previousStart > startDateTime) {
         alert("Sessions should be scheduled in chronological order");
         return false;
