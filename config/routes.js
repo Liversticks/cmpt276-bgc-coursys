@@ -24,6 +24,8 @@ module.exports = (app, passport, database) => {
   app.get('/newuser', users.signup);
   app.post('/newuser', users.createAccount);
 
+  //view user details - can only get own user
+  app.get('/me', auth.requiresLogin, users.getOwnData);
 
 
   //organizer-only paths

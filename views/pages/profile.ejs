@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include('../partials/header.ejs') %>
+  </head>
+  <body>
+
+    <% if (isOrganizer) { %>
+    <%- include('../partials/orgNav.ejs') %>
+    <% } else { %>
+    <%- include('../partials/nav.ejs') %>
+    <% } %>
+
+    <div class="container">
+      <div class="row pt-5 pb-2 justify-content-between">
+        <div class="col-6">
+          <h2>My Courses</h2>
+        </div>
+      </div>
+      <table id="courseTable" class="table table-striped col-12" data-toggle="table" data-search="true"
+        data-unique-id="id">
+          <thead>
+            <tr>
+              <th class="d-none" scope="col" data-field="id" data-sortable="false"></th>
+              <th scope="col" data-field="title" data-sortable="true">Course Name</th>
+              <th scope="col" data-field="topic" data-sortable="true">Topic</th>
+              <th scope="col" data-field="location" data-sortable="true">Location</th>
+              <th scope="col" data-field="regDead" data-sortable="true">Registration Deadline</th>
+              <th scope="col" data-field="nextSess" data-sortable="true">Next Session</th>
+              <th scope="col" data-field="status" data-sortable="true">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% data.forEach((item, index) => { %>
+              <tr>
+                <th class="d-none" id=<%= item.id %>><%= item.id %></th>
+                <td><%= item.title %></td>
+                <td><%= item.topic %></td>
+                <td><%= item.location %></td>
+                <td><%= item.deadline %></td>
+                <td><%= item.nextSess %></td>
+                <td><%= item.status %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+      </table>
+    </div>
+    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+    <script type="text/javascript">
+      function handleCellClick(event, field, value, row, $element) {
+        $(location).attr('href', '/courses/' + row.id);
+      }
+
+      window.onload = () => {
+        $("#courseTable").on('click-cell.bs.table', handleCellClick);
+      }
+    </script>
+  </body>
+</html>

@@ -145,14 +145,18 @@ Manual emails can be sent by organizers on the view-course page (`/courses/ID`).
 
 ## User Course Status
 
-We wished we had more time/energy left to implement a profile page for users to easily view their past/current course enrollment. As temporary workarounds,
-* On the main page (`/main`), searching for "Enrolled" will show future courses (registration deadline has not passed yet) that the user is successfully enrolled in
-* Similarly, searching for "Waitlisted" will show future courses that user is currently waitlisted in.
+~~We wished we had more time/energy left to implement a profile page for users to easily view their past/current course enrollment. As temporary workarounds,~~
+* ~~On the main page (`/main`), searching for "Enrolled" will show future courses (registration deadline has not passed yet) that the user is successfully enrolled in~~
+* ~~Similarly, searching for "Waitlisted" will show future courses that user is currently waitlisted in.~~
 
-IMPORTANT: AS OF NOW, THERE IS NO WAY FOR A USER TO VIEW COURSE DETAILS FOR A COURSE THEY ARE CURRENTLY ENROLLED/WAITLISTED IN BUT WHERE THE REGISTRATION DEADLINE HAS PASSED. (This is due to the queryCourse query in the landing function in `./userTypes/users/index.js`, which filters using the course deadline). Organizers will be able to "view" the details regardless of time by going to the course edit page without making any changes.
+UPDATE (August 30, 2020): Added a basic user profile page (path: `/me`)
+* Can view past courses + current enrolled/waitlisted courses
+* Registration deadline + next session (if applicable) shown
+* Status is given (past, enrolled, waitlisted)
+* Links to course page for rest of sessions/description
 
-Ideally, we would build a user page to show the user's past enrolled courses and current enrolled/waitlisted courses. One could use the following query:
-`let query = 'SELECT c.* FROM COURSE c, ENROLLMENT e WHERE c.id = e.course_id AND e.user_id = $1;'` (passing the userID, located in req.user.id, as the query parameter), then map the result rows into a table. One would access this page from the sidebar.
+As of now, the system will not reject registration made after the registration deadline (this is probably a trivial fix that can be done via changing the insert query).
+
 
 ## Technical details
 

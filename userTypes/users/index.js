@@ -10,7 +10,7 @@ const saltRounds = 10;
 
 
 module.exports = {
-  
+
   //all login cases
   //if logged in (or submit valid login credentials), redirect to appropriate landing page
   //otherwise, render login page
@@ -185,10 +185,66 @@ module.exports = {
         });
       }
     })
+  },
 
+  getOwnData: (req, res) => {
+    let userID = parseInt(req.user.id, 10);
+    let isOrganizer = req.user.type === "organizer" ? true : false;
+    console.log(userID);
 
+    let userQuery = `SELECT c.id, c.course_name, c.topic, c.location, c.course_deadline,
+    c.seat_capacity, min(cs.session_start) AS next_sess
+    FROM courses c, enrollment e, course_sessions cs
+    WHERE c.id = e.course_id AND c.id = cs.course_id AND e.user_id = $1
+    GROUP BY c.id
+    ORDER BY c.course_deadline ASC;`
 
+    let queryPosition = `
+    SELECT course_id, COUNT(e2.user_id) AS position FROM enrollment e2 WHERE e2.course_id IN
+    (SELECT course_id FROM enrollment e WHERE e.user_id = $1 AND e2.time<=e.time ORDER BY time ASC)
+    GROUP BY course_id;
+    `;
 
+    database.query(userQuery, [userID], (dbErr, dbRes) => {
+      if (dbErr) {
+        return res.json("Database error - could not retrieve user records");
+      } else {
+        database.query(queryPosition, [userID], (dbErr2, dbRes2) => {
+          if (dbErr2) {
+            return res.json("Database error - could not retrieve user positions");
+          } else {
+            if (dbRes.rows.length != dbRes2.rows.length) {
+              return res.json("Database error - enrollment desync");
+            } else {
+              let inputList = {
+                isOrganizer: isOrganizer,
+                data: []
+              };
+              let dateFormat = {dateStyle: 'short', timeStyle: 'short'};
+              let current = new Date();
+              for (let i = 0; i < dbRes.rows.length; i++) {
+                let deadlineDate = new Date(dbRes.rows[i].course_deadline);
+                let nextDate = new Date(dbRes.rows[i].next_sess);
+
+                inputList.data.push(
+                  {
+                    id: dbRes.rows[i].id,
+                    title: dbRes.rows[i].course_name,
+                    topic: dbRes.rows[i].topic,
+                    location: dbRes.rows[i].location,
+                    deadline: deadlineDate > current ? deadlineDate.toLocaleString("en-US", dateFormat) : "Passed",
+                    nextSess: nextDate > current ? nextDate.toLocaleString("en-US", dateFormat) : "N/A",
+                    status: nextDate > current ? dbRes2.rows[i].position > dbRes.rows[i].seat_capacity ? "Waitlisted" : "Enrolled" : "Completed"
+                  }
+                );
+              }
+              return res.render("pages/profile", inputList);
+            }
+
+          }
+        })
+      }
+    })
   }
 
 }
